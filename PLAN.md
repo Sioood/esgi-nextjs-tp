@@ -269,22 +269,22 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 6 — Page détail ville ⬜ PROCHAINE
+### Phase 6 — Page détail ville ✅ TERMINÉE
 
 **Commit suggéré :** `feat(city): add dynamic city detail page`
 
-- [ ] `app/ville/[citySlug]/page.tsx` — Server Component async
-- [ ] Parser slug → `getCityById()` → `getWeather()`
-- [ ] Conditions actuelles : temp, ressenti, humidité, pression, vent, UV, ciel
-- [ ] Prévisions 7 jours : min/max + icônes
-- [ ] Lever / coucher du soleil
-- [ ] Lien « Voir sur la carte » (OSM)
-- [ ] Bouton favori + lien retour accueil
-- [ ] `notFound()` si ville invalide
+- [x] `app/ville/[citySlug]/page.tsx` — Server Component async
+- [x] Parser slug → `getCityById()` → `getWeather()`
+- [x] Conditions actuelles : temp, ressenti, humidité, pression, vent, UV, ciel
+- [x] Prévisions 7 jours : min/max + icônes
+- [x] Lever / coucher du soleil
+- [x] Lien « Voir sur la carte » (OSM)
+- [x] Bouton favori + lien retour accueil
+- [x] `notFound()` si ville invalide
 
 ---
 
-### Phase 7 — Fonctionnalité outfit ⬜
+### Phase 7 — Fonctionnalité outfit ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(outfit): add daily outfit suggestion based on weather`
 
@@ -346,16 +346,16 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | README.md détaillé (à jour) | 9 | ⬜ |
 | Captures d'écran | 9–10 | ⬜ |
 | Recherche + géocodage | 3 | ✅ |
-| Météo actuelle + prévisions 7j | 6 | ⬜ |
+| Météo actuelle + prévisions 7j | 6 | ✅ |
 | Favoris localStorage | 4 | ✅ |
 | Feature originale outfit | 7 | ⬜ |
-| Routes dynamiques | 6 | ⬜ |
-| Server + Client Components | 2–7 | ⬜ |
+| Routes dynamiques | 6 | ✅ |
+| Server + Client Components | 2–7 | ✅ |
 | loading / error / not-found | 8 | ⬜ |
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
-| Historique Git propre | toutes | 🔄 (6/11 phases) |
+| Historique Git propre | toutes | 🔄 (7/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -384,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 6 — Page détail ville**
+**Phase 7 — Fonctionnalité outfit**
 
-Dis « go phase 6 » pour lancer l'implémentation.
+Dis « go phase 7 » pour lancer l'implémentation.
 
 ---
 
