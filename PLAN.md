@@ -308,21 +308,21 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 9 — README et documentation ⬜ PROCHAINE
+### Phase 9 — README et documentation ✅ TERMINÉE
 
 **Commit suggéré :** `docs: write complete README for submission`
 
-- [ ] Réécrire [README.md](README.md) (actuellement anticipé, ne reflète pas le code)
-- [ ] Nom + description, fonctionnalités, outfit, technologies
-- [ ] Installation `pnpm install` → `pnpm dev`
-- [ ] Variables d'environnement
-- [ ] Choix Server vs Client Components
-- [ ] Section captures `public/screenshots/`
-- [ ] Attribution Open-Meteo CC BY 4.0
+- [x] Réécrire [README.md](README.md) aligné sur le code actuel
+- [x] Nom + description, fonctionnalités, outfit, technologies
+- [x] Installation `pnpm install` → `pnpm dev`
+- [x] Variables d'environnement
+- [x] Choix Server vs Client Components
+- [x] Section captures `public/screenshots/`
+- [x] Attribution Open-Meteo CC BY 4.0
 
 ---
 
-### Phase 10 — Qualité finale ⬜
+### Phase 10 — Qualité finale ⬜ PROCHAINE
 
 **Commit suggéré :** `chore: final polish and lint pass`
 
@@ -342,8 +342,8 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | PLAN.md | 0 | ✅ |
 | .gitignore configuré | 0 | ✅ |
 | Bootstrap Next.js + metadata MeeThéo | 0 | ✅ |
-| Code source complet | 0–10 | ⬜ |
-| README.md détaillé (à jour) | 9 | ⬜ |
+| Code source complet | 0–10 | ✅ |
+| README.md détaillé (à jour) | 9 | ✅ |
 | Captures d'écran | 9–10 | ⬜ |
 | Recherche + géocodage | 3 | ✅ |
 | Météo actuelle + prévisions 7j | 6 | ✅ |
@@ -355,7 +355,7 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
-| Historique Git propre | toutes | 🔄 (9/11 phases) |
+| Historique Git propre | toutes | 🔄 (10/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -384,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 9 — README et documentation**
+**Phase 10 — Qualité finale** (lint, build, polish)
 
-Dis « go phase 9 » pour lancer l'implémentation.
+Dis « go phase 10 » pour lancer la validation finale.
 
 ---
 
