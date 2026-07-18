@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { FavoriteCity } from "@/lib/types/favorites";
 import type { WeatherResponse } from "@/lib/types/weather";
-import { Card } from "@/components/ui/Card";
+import { WindowCard } from "@/components/ui/WindowCard";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { OutfitCard } from "@/components/outfit/OutfitCard";
 import { WeatherIcon } from "@/components/weather/WeatherIcon";
 import { useFavorites } from "@/lib/hooks/useFavorites";
@@ -52,39 +53,67 @@ function FavoriteWeatherCard({ city }: { city: FavoriteCity }) {
     : [];
 
   return (
-    <Card className="relative h-full">
-      <div className="absolute right-2 top-2">
-        <FavoriteButton city={city} />
-      </div>
-      <Link href={cityPath(city.id, city.name)} className="block pr-10">
-        <p className="font-mono text-sm font-semibold text-text-primary">{city.name}</p>
-        <p className="truncate text-xs text-text-tertiary">{formatLocation(city)}</p>
+    <WindowCard
+      title={`${city.name.toLowerCase().replace(/\s+/g, "-")}.weather`}
+      action={<FavoriteButton city={city} />}
+      bodyClassName="p-5"
+      className="h-full"
+    >
+      <Link
+        href={cityPath(city.id, city.name)}
+        className="block rounded-sm focus-visible:outline-none"
+      >
+        <p className="truncate font-mono text-sm font-semibold text-text-primary">
+          {city.name}
+        </p>
+        <p className="truncate font-mono text-[11px] text-text-tertiary">
+          {formatLocation(city)}
+        </p>
 
         {weather && (
-          <div className="mt-4 flex items-center gap-3">
-            <WeatherIcon code={weather.current.weather_code} />
-            <div>
-              <p className="font-mono text-2xl font-bold text-primary">
-                {formatTemperature(weather.current.temperature_2m)}
+          <>
+            <div className="mt-4 flex items-center gap-3">
+              <WeatherIcon code={weather.current.weather_code} size="lg" />
+              <div className="min-w-0">
+                <p className="font-mono text-3xl font-bold text-primary tabular-nums">
+                  {formatTemperature(weather.current.temperature_2m)}
+                </p>
+                {skyLabel && (
+                  <p className="truncate text-xs text-text-secondary">
+                    {skyLabel}
+                  </p>
+                )}
+              </div>
+              <p className="ml-auto shrink-0 text-right font-mono text-xs tabular-nums text-text-tertiary">
+                <span className="text-text-secondary">
+                  {formatTemperature(weather.daily.temperature_2m_max[0])}
+                </span>
+                <br />
+                {formatTemperature(weather.daily.temperature_2m_min[0])}
               </p>
-              {skyLabel && (
-                <p className="text-xs text-text-secondary">{skyLabel}</p>
-              )}
             </div>
+
+            {outfitItems.length > 0 && <OutfitCard items={outfitItems} compact />}
+          </>
+        )}
+
+        {!weather && !error && (
+          <div className="mt-4 space-y-3" aria-hidden="true">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <Skeleton className="h-8 w-20" />
+            </div>
+            <Skeleton className="h-3 w-3/4" />
           </div>
         )}
 
-        {outfitItems.length > 0 && <OutfitCard items={outfitItems} compact />}
-
-        {!weather && !error && (
-          <p className="mt-4 text-xs text-text-tertiary">{STRINGS.loading}</p>
-        )}
-
         {error && (
-          <p className="mt-4 text-xs text-text-tertiary">Météo indisponible</p>
+          <p className="mt-4 font-mono text-xs text-text-tertiary">
+            <span className="text-error">✗</span> météo indisponible
+          </p>
         )}
       </Link>
-    </Card>
+    </WindowCard>
   );
 }
 
@@ -92,14 +121,29 @@ export function FavoritesList() {
   const { favorites, isLoaded } = useFavorites();
 
   if (!isLoaded) {
-    return <p className="text-sm text-text-tertiary">{STRINGS.loading}</p>;
+    return (
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[0, 1, 2].map((i) => (
+          <li key={i}>
+            <Skeleton className="h-48 rounded-md" />
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   if (favorites.length === 0) {
     return (
-      <Card>
-        <p className="text-sm text-text-secondary">{STRINGS.favoritesEmpty}</p>
-      </Card>
+      <WindowCard title="favorites/empty">
+        <div className="flex flex-col items-center gap-3 py-6 text-center">
+          <span className="text-4xl" aria-hidden="true">
+            ⭐
+          </span>
+          <p className="max-w-sm text-sm text-text-secondary">
+            {STRINGS.favoritesEmpty}
+          </p>
+        </div>
+      </WindowCard>
     );
   }
 

@@ -62,6 +62,42 @@ export function windDirection(degrees: number): string {
   return directions[index];
 }
 
+export type SemanticVariant = "success" | "warning" | "error" | "info";
+
+/** Maps a UV index to a label + semantic variant for coloring. */
+export function uvLevel(value: number): { label: string; variant: SemanticVariant } {
+  if (value < 3) return { label: "Faible", variant: "success" };
+  if (value < 6) return { label: "Modéré", variant: "warning" };
+  if (value < 8) return { label: "Élevé", variant: "error" };
+  return { label: "Très élevé", variant: "error" };
+}
+
+/** Maps a precipitation probability (0–100) to a label + semantic variant. */
+export function precipLevel(value: number): {
+  label: string;
+  variant: SemanticVariant;
+} {
+  if (value < 20) return { label: "Sec", variant: "success" };
+  if (value < 50) return { label: "Averses possibles", variant: "info" };
+  if (value < 80) return { label: "Pluie probable", variant: "warning" };
+  return { label: "Pluie quasi certaine", variant: "error" };
+}
+
+export function formatShortDay(dateStr: string, timezone?: string): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    weekday: "short",
+    timeZone: timezone,
+  }).format(new Date(dateStr));
+}
+
+export function formatDayMonth(dateStr: string, timezone?: string): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+    timeZone: timezone,
+  }).format(new Date(dateStr));
+}
+
 export function formatLocation(city: {
   name: string;
   admin1?: string;

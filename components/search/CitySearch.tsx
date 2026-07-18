@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GeocodingResult } from "@/lib/types/geocoding";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
 import {
   SEARCH_DEBOUNCE_MS,
   SEARCH_MIN_CHARS,
@@ -19,6 +17,21 @@ import { cn } from "@/lib/utils/cn";
 interface GeocodeApiResponse {
   results?: GeocodingResult[];
   error?: string;
+}
+
+/** Highlights the matched query substring inside a city name. */
+function highlightMatch(name: string, query: string) {
+  const idx = name.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1 || query.length === 0) return name;
+  return (
+    <>
+      {name.slice(0, idx)}
+      <mark className="bg-transparent text-primary">
+        {name.slice(idx, idx + query.length)}
+      </mark>
+      {name.slice(idx + query.length)}
+    </>
+  );
 }
 
 export function CitySearch() {
@@ -108,85 +121,136 @@ export function CitySearch() {
     }
   }
 
-  const showMinChars = query.length > 0 && query.length < SEARCH_MIN_CHARS;
+  const trimmed = query.trim();
+  const showMinChars = query.length > 0 && trimmed.length < SEARCH_MIN_CHARS;
   const showNoResults =
-    isOpen && !isLoading && query.length >= SEARCH_MIN_CHARS && results.length === 0;
+    isOpen &&
+    !isLoading &&
+    trimmed.length >= SEARCH_MIN_CHARS &&
+    results.length === 0;
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <Label htmlFor="city-search">{STRINGS.searchPlaceholder}</Label>
-      <Input
-        id="city-search"
-        type="search"
-        role="combobox"
-        aria-expanded={isOpen}
-        aria-autocomplete="list"
-        aria-controls="city-search-results"
-        aria-activedescendant={
-          activeIndex >= 0 ? `city-option-${activeIndex}` : undefined
-        }
-        placeholder={STRINGS.searchPlaceholder}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onFocus={() => {
-          if (results.length > 0) setIsOpen(true);
-        }}
-        onKeyDown={handleKeyDown}
-        autoComplete="off"
-      />
+      <label
+        htmlFor="city-search"
+        className="mb-2 flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary"
+      >
+        <span className="text-primary/70">$</span> rechercher une ville
+      </label>
 
-      {isLoading && (
-        <p className="mt-2 text-xs text-text-tertiary" role="status">
-          {STRINGS.searchLoading}
-        </p>
-      )}
+      <div className="relative">
+        <span
+          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-sm text-primary"
+          aria-hidden="true"
+        >
+          ❯
+        </span>
+        <input
+          id="city-search"
+          type="search"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-autocomplete="list"
+          aria-controls="city-search-results"
+          aria-activedescendant={
+            activeIndex >= 0 ? `city-option-${activeIndex}` : undefined
+          }
+          placeholder={STRINGS.searchPlaceholder}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => {
+            if (results.length > 0) setIsOpen(true);
+          }}
+          onKeyDown={handleKeyDown}
+          autoComplete="off"
+          className={cn(
+            "h-12 w-full rounded-md border bg-background pl-9 pr-10 font-mono text-sm text-text-primary transition-all placeholder:text-text-tertiary",
+            error
+              ? "border-error shadow-[0_0_12px_rgba(248,113,113,0.15)]"
+              : "border-border-medium focus:border-primary focus:shadow-[0_0_16px_rgba(74,222,128,0.15)]",
+          )}
+        />
+        {isLoading && (
+          <span
+            className="absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-border-strong border-t-primary"
+            role="status"
+            aria-label={STRINGS.searchLoading}
+          />
+        )}
+      </div>
+
       {error && (
         <p className="mt-2 text-xs text-error" role="alert">
           {error}
         </p>
       )}
       {showMinChars && (
-        <p className="mt-2 text-xs text-text-tertiary">{STRINGS.searchMinChars}</p>
+        <p className="mt-2 font-mono text-xs text-text-tertiary">
+          {STRINGS.searchMinChars}
+        </p>
+      )}
+      {showNoResults && (
+        <p className="mt-2 font-mono text-xs text-text-tertiary">
+          {STRINGS.searchNoResults}
+        </p>
       )}
 
       {isOpen && results.length > 0 && (
-        <ul
-          id="city-search-results"
-          role="listbox"
-          className="absolute z-20 mt-1 w-full overflow-hidden rounded-sm border border-border-medium bg-surface shadow-[0_0_0_1px_rgba(241,245,249,0.06),0_24px_48px_rgba(0,0,0,0.5)]"
+        <div
+          className="absolute z-40 mt-2 w-full overflow-hidden rounded-md border border-border-medium bg-surface shadow-[0_0_0_1px_rgba(241,245,249,0.06),0_24px_48px_rgba(0,0,0,0.5)]"
         >
-          {results.map((city, index) => (
-            <li
-              key={city.id}
-              id={`city-option-${index}`}
-              role="option"
-              aria-selected={index === activeIndex}
-              className={cn(
-                "flex items-center transition-colors hover:bg-surface-raised",
-                index === activeIndex && "bg-surface-raised",
-              )}
-            >
-              <Link
-                href={cityPath(city.id, city.name)}
-                className="block flex-1 px-4 py-3 text-sm"
-                onClick={() => {
-                  setIsOpen(false);
-                  setQuery("");
-                }}
+          <ul id="city-search-results" role="listbox" className="max-h-80 overflow-y-auto py-1">
+            {results.map((city, index) => (
+              <li
+                key={city.id}
+                id={`city-option-${index}`}
+                role="option"
+                aria-selected={index === activeIndex}
+                className={cn(
+                  "mx-1 flex items-center rounded-sm transition-colors",
+                  index === activeIndex
+                    ? "bg-surface-raised"
+                    : "hover:bg-surface-raised/60",
+                )}
               >
-                <span className="font-medium text-text-primary">{city.name}</span>
-                <span className="mt-0.5 block text-xs text-text-tertiary">
-                  {formatLocation(city)}
+                <Link
+                  href={cityPath(city.id, city.name)}
+                  className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setQuery("");
+                  }}
+                >
+                  <span className="text-base" aria-hidden="true">
+                    📍
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-medium text-text-primary">
+                      {highlightMatch(city.name, trimmed)}
+                    </span>
+                    <span className="mt-0.5 block truncate font-mono text-[11px] text-text-tertiary">
+                      {formatLocation(city)}
+                    </span>
+                  </span>
+                </Link>
+                <span className="pr-2">
+                  <FavoriteButton city={toFavoriteCity(city)} />
                 </span>
-              </Link>
-              <FavoriteButton city={toFavoriteCity(city)} />
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {showNoResults && (
-        <p className="mt-2 text-xs text-text-tertiary">{STRINGS.searchNoResults}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-3 border-t border-border-subtle px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-text-tertiary">
+            <span>
+              <kbd className="text-text-secondary">↑↓</kbd> naviguer
+            </span>
+            <span>
+              <kbd className="text-text-secondary">↵</kbd> ouvrir
+            </span>
+            <span>
+              <kbd className="text-text-secondary">esc</kbd> fermer
+            </span>
+          </div>
+        </div>
       )}
     </div>
   );

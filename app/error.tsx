@@ -1,7 +1,7 @@
 "use client";
 
+import { StatusPanel } from "@/components/layout/StatusPanel";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/layout/Container";
 import { STRINGS } from "@/lib/constants";
 
 export default function Error({
@@ -11,12 +11,15 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <Container className="py-16 text-center">
-      <h1 className="font-mono text-3xl font-bold text-error">{STRINGS.errorTitle}</h1>
-      <p className="mt-4 text-text-secondary">{STRINGS.errorMessage}</p>
-      <Button className="mt-8" onClick={reset}>
-        {STRINGS.retry}
-      </Button>
-    </Container>
+    <StatusPanel
+      window="runtime.error"
+      code="500"
+      command="meetheo --run"
+      title={STRINGS.errorTitle}
+      message={STRINGS.errorMessage}
+      tone="error"
+    >
+      <Button onClick={reset}>{STRINGS.retry}</Button>
+    </StatusPanel>
   );
 }

@@ -1,6 +1,7 @@
 import type { OutfitItem } from "@/lib/utils/outfit";
-import { Card } from "@/components/ui/Card";
+import { WindowCard } from "@/components/ui/WindowCard";
 import { Chip } from "@/components/ui/Chip";
+import { Overline } from "@/components/ui/Overline";
 import { STRINGS } from "@/lib/constants";
 
 interface OutfitCardProps {
@@ -13,26 +14,41 @@ export function OutfitCard({ items, compact = false }: OutfitCardProps) {
 
   if (compact) {
     return (
-      <p className="mt-3 text-xs text-text-secondary">
-        {items
-          .slice(0, 3)
-          .map((item) => `${item.icon} ${item.label}`)
-          .join(" · ")}
-      </p>
+      <div className="mt-4 border-t border-border-subtle pt-3">
+        <Overline prompt=">" tone="muted" className="mb-2">
+          tenue
+        </Overline>
+        <div className="flex flex-wrap gap-1.5">
+          {items.slice(0, 3).map((item) => (
+            <Chip key={item.id} variant="soft">
+              <span aria-hidden="true">{item.icon}</span> {item.label}
+            </Chip>
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <h2 className="font-mono text-xl font-semibold">{STRINGS.outfitTitle}</h2>
-      <p className="mt-1 text-sm text-text-secondary">{STRINGS.outfitSubtitle}</p>
-      <div className="mt-4 flex flex-wrap gap-2">
+    <WindowCard title="outfit.today" className="h-full">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl" aria-hidden="true">
+          👕
+        </span>
+        <div>
+          <h2 className="font-mono text-lg font-semibold">
+            {STRINGS.outfitTitle}
+          </h2>
+          <p className="text-xs text-text-secondary">{STRINGS.outfitSubtitle}</p>
+        </div>
+      </div>
+      <div className="mt-5 flex flex-wrap gap-2">
         {items.map((item) => (
-          <Chip key={item.id} variant="success">
-            {item.icon} {item.label}
+          <Chip key={item.id} variant="soft">
+            <span aria-hidden="true">{item.icon}</span> {item.label}
           </Chip>
         ))}
       </div>
-    </Card>
+    </WindowCard>
   );
 }

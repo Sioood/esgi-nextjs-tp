@@ -28,11 +28,14 @@ export function FavoriteButton({ city, className }: FavoriteButtonProps) {
       )}
       aria-label={active ? STRINGS.removeFavorite : STRINGS.addFavorite}
       aria-pressed={active}
+      title={active ? STRINGS.removeFavorite : STRINGS.addFavorite}
     >
       <span
         className={cn(
-          "text-xl transition-colors",
-          active ? "text-secondary" : "text-text-tertiary",
+          "text-xl transition-all duration-200 hover:scale-110",
+          active
+            ? "text-secondary [text-shadow:0_0_12px_rgba(251,191,36,0.5)]"
+            : "text-text-tertiary hover:text-secondary",
         )}
       >
         {active ? "★" : "☆"}

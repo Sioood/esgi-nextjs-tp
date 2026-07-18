@@ -1,5 +1,5 @@
-import { PageSkeleton } from "@/components/ui/Skeleton";
+import { CityPageSkeleton } from "@/components/ui/Skeleton";
 
 export default function CityLoading() {
-  return <PageSkeleton />;
+  return <CityPageSkeleton />;
 }

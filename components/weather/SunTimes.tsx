@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/Card";
+import { WindowCard } from "@/components/ui/WindowCard";
 import { STRINGS } from "@/lib/constants";
 import { formatTime } from "@/lib/utils/format";
 
@@ -10,22 +10,37 @@ interface SunTimesProps {
 
 export function SunTimes({ sunrise, sunset, timezone }: SunTimesProps) {
   return (
-    <Card>
-      <h2 className="font-mono text-xl font-semibold">{STRINGS.sunTimes}</h2>
-      <dl className="mt-4 grid grid-cols-2 gap-4">
+    <WindowCard title="sun.times" className="h-full">
+      <dl className="flex items-center justify-between gap-4">
         <div>
-          <dt className="text-xs font-semibold text-text-secondary">{STRINGS.sunrise}</dt>
-          <dd className="mt-1 font-mono text-lg text-primary">
-            🌅 {formatTime(sunrise, timezone)}
+          <dt className="font-mono text-[11px] font-semibold uppercase tracking-widest text-text-secondary">
+            {STRINGS.sunrise}
+          </dt>
+          <dd className="mt-1 font-mono text-2xl font-bold text-secondary tabular-nums">
+            {formatTime(sunrise, timezone)}
           </dd>
         </div>
-        <div>
-          <dt className="text-xs font-semibold text-text-secondary">{STRINGS.sunset}</dt>
-          <dd className="mt-1 font-mono text-lg text-secondary">
-            🌇 {formatTime(sunset, timezone)}
-          </dd>
-        </div>
+        <span className="text-2xl" aria-hidden="true">
+          🌅
+        </span>
       </dl>
-    </Card>
+
+      {/* Decorative day arc */}
+      <div className="my-4 h-px w-full bg-linear-to-r from-transparent via-secondary/50 to-transparent" />
+
+      <dl className="flex items-center justify-between gap-4">
+        <div>
+          <dt className="font-mono text-[11px] font-semibold uppercase tracking-widest text-text-secondary">
+            {STRINGS.sunset}
+          </dt>
+          <dd className="mt-1 font-mono text-2xl font-bold text-secondary tabular-nums">
+            {formatTime(sunset, timezone)}
+          </dd>
+        </div>
+        <span className="text-2xl" aria-hidden="true">
+          🌇
+        </span>
+      </dl>
+    </WindowCard>
   );
 }
