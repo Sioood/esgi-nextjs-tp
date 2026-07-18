@@ -295,20 +295,20 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 8 — États Next.js ⬜ PROCHAINE
+### Phase 8 — États Next.js ✅ TERMINÉE
 
 **Commit suggéré :** `feat(ui): add loading, error and not-found states`
 
-- [ ] `app/loading.tsx` — skeleton DevLog
-- [ ] `app/error.tsx` — bouton « Réessayer »
-- [ ] `app/not-found.tsx` — 404 personnalisée
-- [ ] `app/ville/[citySlug]/loading.tsx`
-- [ ] `app/ville/[citySlug]/error.tsx`
-- [ ] `app/ville/[citySlug]/not-found.tsx`
+- [x] `app/loading.tsx` — skeleton DevLog
+- [x] `app/error.tsx` — bouton « Réessayer »
+- [x] `app/not-found.tsx` — 404 personnalisée
+- [x] `app/ville/[citySlug]/loading.tsx`
+- [x] `app/ville/[citySlug]/error.tsx`
+- [x] `app/ville/[citySlug]/not-found.tsx`
 
 ---
 
-### Phase 9 — README et documentation ⬜
+### Phase 9 — README et documentation ⬜ PROCHAINE
 
 **Commit suggéré :** `docs: write complete README for submission`
 
@@ -351,11 +351,11 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | Feature originale outfit | 7 | ✅ |
 | Routes dynamiques | 6 | ✅ |
 | Server + Client Components | 2–7 | ✅ |
-| loading / error / not-found | 8 | ⬜ |
+| loading / error / not-found | 8 | ✅ |
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
-| Historique Git propre | toutes | 🔄 (8/11 phases) |
+| Historique Git propre | toutes | 🔄 (9/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -384,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 8 — États Next.js** (loading, error, not-found)
+**Phase 9 — README et documentation**
 
-Dis « go phase 8 » pour lancer l'implémentation.
+Dis « go phase 9 » pour lancer l'implémentation.
 
 ---
 
