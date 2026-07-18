@@ -1,6 +1,8 @@
 # PLAN.md — MeeThéo
 
-Document de suivi global pour le mini-projet Next.js. **Ne lancer une phase que lorsqu'elle est validée explicitement.**
+Document de suivi global pour le mini-projet Next.js.
+
+**Règle :** ne lancer une phase que lorsqu'elle est validée explicitement. Un commit par phase.
 
 ---
 
@@ -17,127 +19,344 @@ Document de suivi global pour le mini-projet Next.js. **Ne lancer une phase que 
 | Carte             | Lien externe OpenStreetMap (sans dépendance Leaflet)                                                              |
 | Feature originale | **Prévision d'outfit** selon météo du jour                                                                        |
 
-### État actuel du dépôt
+---
 
-- [x] **PLAN.md** créé — document de suivi
-- [x] **Phase 0** prête à commit (`chore: init MeeThéo project foundations`)
-- [ ] Phases 1 à 10 — **non commencées** (code en brouillon local non stagé, à implémenter phase par phase)
-- [x] Projet Next.js initialisé (`create-next-app`)
-- [x] [DESIGN.md](DESIGN.md) présent, non encore appliqué au CSS
-- [ ] Aucune intégration API météo committée
+## État actuel du dépôt (18 juil. 2026)
+
+| Élément | Statut |
+| ------- | ------ |
+| Working tree | **Propre** — aucun fichier non commité |
+| Dernier commit | `8c06437` — Phase 0 (Phase 1 en attente de commit) |
+| Design system DevLog | ✅ Appliqué (Phase 1) |
+| Commit initial | `1864234` — `first commit` (README anticipé, à réécrire en Phase 9) |
+| `PLAN.md` | ✅ À jour |
+| `DESIGN.md` | ✅ Présent, **non appliqué** au CSS |
+| Bootstrap Next.js | ✅ `app/`, configs, `package.json` (`meetheo`) |
+| Arborescence vide | ✅ `components/.gitkeep`, `lib/.gitkeep`, `public/screenshots/.gitkeep` |
+| Metadata | ✅ Titre **MeeThéo**, `lang="fr"` |
+| Intégration API | ⬜ Aucune |
+| Fonctionnalités métier | ⬜ Aucune |
+
+### Fichiers présents aujourd'hui
+
+```
+app/
+  favicon.ico, globals.css, layout.tsx, page.tsx   ← page placeholder MeeThéo
+components/.gitkeep
+lib/.gitkeep
+public/screenshots/.gitkeep
+PLAN.md, DESIGN.md, .env.example, .gitignore
+```
+
+### Ce qui n'existe pas encore (à créer phase par phase)
+
+- Composants UI, layout, recherche, météo, favoris, outfit
+- Couche API (`lib/api/`, types, utils)
+- Routes dynamiques `app/ville/[citySlug]/`
+- Route Handlers `app/api/`
+- États `loading.tsx`, `error.tsx`, `not-found.tsx`
+
+---
+
+## Architecture cible
+
+```mermaid
+flowchart TB
+  subgraph client [Client Components]
+    Search[CitySearch + debounce]
+    FavBtn[FavoriteButton]
+    FavList[FavoritesList]
+    Outfit[OutfitCard]
+  end
+
+  subgraph server [Server Components]
+    Home[app/page.tsx]
+    Detail[app/ville/citySlug/page.tsx]
+  end
+
+  subgraph libLayer [lib/]
+    GeoAPI[geocoding.ts]
+    WeatherAPI[forecast.ts]
+    OutfitLogic[outfit.ts]
+    FavHook[useFavorites]
+  end
+
+  subgraph external [Open-Meteo]
+    GeoEP[geocoding-api.open-meteo.com]
+    ForecastEP[api.open-meteo.com/v1/forecast]
+  end
+
+  Search --> GeoAPI
+  GeoAPI --> GeoEP
+  Home --> FavList
+  FavList --> FavHook
+  Detail --> WeatherAPI
+  WeatherAPI --> ForecastEP
+  Detail --> Outfit
+  Outfit --> OutfitLogic
+  FavBtn --> FavHook
+```
+
+### Séparation Server / Client
+
+| Zone | Type | Raison |
+| ---- | ---- | ------ |
+| Layout, pages ville | Server Component | Fetch météo côté serveur, SEO |
+| `CitySearch`, favoris | Client Component | `useState`, `localStorage`, debounce |
+| `loading.tsx`, `error.tsx`, `not-found.tsx` | Conventions App Router | Feedback utilisateur |
+| Fetch météo détail | Server + `revalidate: 1800` | Cache 30 min |
+| Géocodage recherche | Route Handler `/api/geocode` | Centraliser + typer |
+
+### Structure de dossiers cible
+
+```
+app/
+  layout.tsx, page.tsx, globals.css
+  loading.tsx, error.tsx, not-found.tsx
+  api/geocode/route.ts, api/weather/route.ts
+  ville/[citySlug]/
+    page.tsx, loading.tsx, error.tsx, not-found.tsx
+components/
+  ui/          Button, Card, Input, Chip, Label, Skeleton
+  layout/      Header, Footer, Container, Providers
+  search/      CitySearch
+  weather/     CurrentWeatherCard, ForecastList, WeatherIcon, SunTimes
+  favorites/   FavoritesList, FavoriteButton
+  outfit/      OutfitCard
+lib/
+  api/geocoding.ts, forecast.ts
+  types/geocoding.ts, weather.ts, favorites.ts
+  utils/city-slug.ts, weather-codes.ts, outfit.ts, format.ts, cn.ts
+  hooks/useFavorites.tsx
+  constants.ts
+public/screenshots/   ← captures à ajouter par toi
+```
+
+---
+
+## APIs Open-Meteo
+
+### Géocodage
+
+```
+GET https://geocoding-api.open-meteo.com/v1/search
+  ?name={query}&count=5&language=fr
+```
+
+- Min **3 caractères**, debounce **300 ms**
+
+### Prévisions
+
+```
+GET https://api.open-meteo.com/v1/forecast
+  ?latitude={lat}&longitude={lon}&timezone=auto&forecast_days=7
+  &current=temperature_2m,relative_humidity_2m,apparent_temperature,
+           weather_code,wind_speed_10m,wind_direction_10m,
+           surface_pressure,uv_index,is_day
+  &daily=weather_code,temperature_2m_max,temperature_2m_min,
+         sunrise,sunset,uv_index_max,precipitation_probability_max
+```
+
+### Carte OSM
+
+```
+https://www.openstreetmap.org/?mlat={lat}&mlon={lon}#map=12/{lat}/{lon}
+```
+
+---
+
+## Feature originale — Prévision d'outfit
+
+Moteur de règles pur (`lib/utils/outfit.ts`) :
+
+| Condition | Suggestions |
+| --------- | ----------- |
+| Ressenti < 5°C | Manteau chaud, écharpe, gants |
+| 5–15°C | Veste, pull |
+| 15–22°C | Tenue légère, veste fine optionnelle |
+| > 22°C | T-shirt, short/robe légère |
+| Pluie (> 50% prob. ou codes WMO 51–67, 80–82) | Parapluie, veste imperméable |
+| Vent > 30 km/h | Coupe-vent |
+| UV ≥ 6 | Lunettes, crème solaire, chapeau |
+| Neige (codes 71–77, 85–86) | Bottes, manteau imperméable |
+
+Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
 ## Phases et commits
 
-Chaque phase = **1 commit** (ou série de commits atomiques) avec message conventionnel.
+### Phase 0 — Fondations projet ✅ TERMINÉE
 
-### Phase 0 — Fondations projet ✅
+**Commit :** `8c06437` — `feat: :sparkles: project fundations`
 
-**Commit :** `chore: init MeeThéo project foundations`
+- [x] Metadata **MeeThéo** + description FR
+- [x] `.gitignore` enrichi (`.cursor/`, `Thumbs.db`, `*.local`, `/.pnpm-store`, `!.env.example`)
+- [x] `.env.example`
+- [x] Arborescence `components/`, `lib/`, `public/screenshots/`
+- [x] `package.json` → `meetheo`
+- [x] `PLAN.md` + `DESIGN.md`
+- [x] Bootstrap Next.js (Tailwind 4, TypeScript, ESLint)
 
-- [x] Renommer metadata : titre **MeeThéo**, description FR
-- [x] Enrichir [`.gitignore`](.gitignore) (`.cursor/`, `Thumbs.db`, `*.local`, `/.pnpm-store`)
-- [x] Créer `.env.example`
-- [x] Créer arborescence `components/`, `lib/`, `public/screenshots/` (`.gitkeep`)
-- [x] Mettre à jour `package.json` name → `meetheo`
-- [x] Créer **PLAN.md**
+---
 
-**Fichiers stagés pour ce commit :** voir `git status` — uniquement fondations + bootstrap Next.js, pas les phases suivantes.
+### Phase 1 — Design system DevLog ✅ TERMINÉE
 
-### Phase 1 — Design system DevLog
+**Commit suggéré :** `feat(design): apply DevLog tokens and fonts`
 
-**Commit :** `feat(design): apply DevLog tokens and fonts`
+- [x] Remplacer Geist par **Inter** + **JetBrains Mono** (`next/font/google`)
+- [x] Porter tokens [DESIGN.md](DESIGN.md) → `app/globals.css` (couleurs, radius 4px, glows)
+- [x] Configurer Tailwind `@theme` avec tokens DevLog
+- [x] Composants UI : `Button`, `Card`, `Input`, `Chip`, `Label`
+- [x] Layout : `Header` (logo MeeThéo), `Footer` (attribution Open-Meteo CC BY 4.0), `Container`
+- [x] Intégrer Header/Footer dans `app/layout.tsx`
 
-- [ ] Remplacer Geist par **Inter** + **JetBrains Mono** via `next/font/google`
-- [ ] Porter les tokens [DESIGN.md](DESIGN.md) en CSS variables dans `app/globals.css`
-- [ ] Configurer Tailwind `@theme` avec les tokens DevLog
-- [ ] Composants UI : `Button`, `Card`, `Input`, `Chip`, `Label`
-- [ ] Layout : `Header`, `Footer`, `Container`
+**Fichiers créés :** `components/ui/*`, `components/layout/*`, `lib/utils/cn.ts`
 
-### Phase 2 — Types TypeScript et couche API
+---
 
-**Commit :** `feat(api): add Open-Meteo types and fetch helpers`
+### Phase 2 — Types TypeScript et couche API ⬜ PROCHAINE
 
-- [ ] Types : `GeocodingResult`, `WeatherResponse`, etc.
-- [ ] `lib/api/geocoding.ts`, `lib/api/forecast.ts` avec cache `revalidate: 1800`
-- [ ] `lib/utils/city-slug.ts`, `weather-codes.ts`, `format.ts`
-- [ ] `lib/constants.ts`
-- [ ] Route Handler `app/api/geocode/route.ts`
+**Commit suggéré :** `feat(api): add Open-Meteo types and fetch helpers`
 
-### Phase 3 — Recherche de villes
+- [ ] Types : `GeocodingResult`, `WeatherResponse`, `FavoriteCity`, etc.
+- [ ] `lib/api/geocoding.ts` — `searchCities()`, `getCityById()`
+- [ ] `lib/api/forecast.ts` — `getWeather()` avec `cache()` + `revalidate: 1800`
+- [ ] `lib/utils/city-slug.ts` — `toCitySlug()`, `parseCitySlug()`, `cityPath()`, `osmMapUrl()`
+- [ ] `lib/utils/weather-codes.ts` — labels FR + icônes WMO
+- [ ] `lib/utils/format.ts` — température, vent, dates FR
+- [ ] `lib/constants.ts` — chaînes UI, clés storage, constantes API
+- [ ] `app/api/geocode/route.ts`
+- [ ] Zéro `any`
 
-**Commit :** `feat(search): add city search with autocomplete`
+---
 
-- [ ] `CitySearch` client, debounce 300 ms, min 3 caractères
-- [ ] Navigation vers `/ville/{id}-{slug}`
+### Phase 3 — Recherche de villes ⬜
 
-### Phase 4 — Gestion des favoris
+**Commit suggéré :** `feat(search): add city search with autocomplete`
 
-**Commit :** `feat(favorites): add localStorage favorites with UI`
+- [ ] `CitySearch` (client) : debounce 300 ms, min 3 chars
+- [ ] Liste suggestions (nom, région, pays)
+- [ ] Navigation `Link` → `/ville/{id}-{slug}`
+- [ ] États chargement / vide / erreur
+- [ ] Accessibilité : `aria-expanded`, clavier, focus ring vert
 
-- [ ] `useFavorites` + `FavoritesProvider`
-- [ ] `FavoriteButton`, `FavoritesList`
+---
 
-### Phase 5 — Page d'accueil complète
+### Phase 4 — Gestion des favoris ⬜
 
-**Commit :** `feat(home): build homepage with search and favorites`
+**Commit suggéré :** `feat(favorites): add localStorage favorites with UI`
 
-### Phase 6 — Page détail ville
+- [ ] `lib/hooks/useFavorites.tsx` — Context + `localStorage` (`meetheo:favorites`)
+- [ ] Type `FavoriteCity` : `{ id, name, latitude, longitude, country, admin1 }`
+- [ ] `FavoriteButton` (étoile pleine/vide)
+- [ ] `FavoritesProvider` dans layout
+- [ ] Indicateur cohérent sur toutes les pages
 
-**Commit :** `feat(city): add dynamic city detail page`
+---
 
-- [ ] `app/ville/[citySlug]/page.tsx`
-- [ ] Conditions actuelles, prévisions 7j, lever/coucher, lien OSM
+### Phase 5 — Page d'accueil complète ⬜
 
-### Phase 7 — Fonctionnalité outfit
+**Commit suggéré :** `feat(home): build homepage with search and favorites`
 
-**Commit :** `feat(outfit): add daily outfit suggestion based on weather`
+- [ ] Hero « MeeThéo » + `CitySearch`
+- [ ] Section favoris avec `FavoritesList`
+- [ ] Cartes météo légères (temp via `/api/weather`)
+- [ ] État « aucun favori »
+- [ ] Responsive mobile / tablette / desktop
+- [ ] Toute navigation via `<Link>`
+
+---
+
+### Phase 6 — Page détail ville ⬜
+
+**Commit suggéré :** `feat(city): add dynamic city detail page`
+
+- [ ] `app/ville/[citySlug]/page.tsx` — Server Component async
+- [ ] Parser slug → `getCityById()` → `getWeather()`
+- [ ] Conditions actuelles : temp, ressenti, humidité, pression, vent, UV, ciel
+- [ ] Prévisions 7 jours : min/max + icônes
+- [ ] Lever / coucher du soleil
+- [ ] Lien « Voir sur la carte » (OSM)
+- [ ] Bouton favori + lien retour accueil
+- [ ] `notFound()` si ville invalide
+
+---
+
+### Phase 7 — Fonctionnalité outfit ⬜
+
+**Commit suggéré :** `feat(outfit): add daily outfit suggestion based on weather`
 
 - [ ] `lib/utils/outfit.ts` — moteur de règles
-- [ ] `OutfitCard` sur détail + résumé sur favoris
+- [ ] `OutfitCard` sur page détail
+- [ ] Résumé outfit sur cartes favoris (accueil)
+- [ ] Chips DevLog (veste, parapluie, etc.)
 
-### Phase 8 — États Next.js
+---
 
-**Commit :** `feat(ui): add loading, error and not-found states`
+### Phase 8 — États Next.js ⬜
 
-- [ ] `loading.tsx`, `error.tsx`, `not-found.tsx` (global + ville)
+**Commit suggéré :** `feat(ui): add loading, error and not-found states`
 
-### Phase 9 — README et documentation
+- [ ] `app/loading.tsx` — skeleton DevLog
+- [ ] `app/error.tsx` — bouton « Réessayer »
+- [ ] `app/not-found.tsx` — 404 personnalisée
+- [ ] `app/ville/[citySlug]/loading.tsx`
+- [ ] `app/ville/[citySlug]/error.tsx`
+- [ ] `app/ville/[citySlug]/not-found.tsx`
 
-**Commit :** `docs: write complete README for submission`
+---
 
-### Phase 10 — Qualité finale
+### Phase 9 — README et documentation ⬜
 
-**Commit :** `chore: final polish and lint pass`
+**Commit suggéré :** `docs: write complete README for submission`
 
-- [ ] `pnpm lint` et `pnpm build` sans erreur
-- [ ] Historique Git propre
+- [ ] Réécrire [README.md](README.md) (actuellement anticipé, ne reflète pas le code)
+- [ ] Nom + description, fonctionnalités, outfit, technologies
+- [ ] Installation `pnpm install` → `pnpm dev`
+- [ ] Variables d'environnement
+- [ ] Choix Server vs Client Components
+- [ ] Section captures `public/screenshots/`
+- [ ] Attribution Open-Meteo CC BY 4.0
+
+---
+
+### Phase 10 — Qualité finale ⬜
+
+**Commit suggéré :** `chore: final polish and lint pass`
+
+- [ ] `pnpm lint` sans erreur
+- [ ] `pnpm build` réussi
+- [ ] Responsive vérifié (3 breakpoints)
+- [ ] Pas de code mort ni `console.log`
+- [ ] Historique Git lisible
+- [ ] Dépôt public prêt pour soumission
 
 ---
 
 ## Checklist livrables (sujet PDF)
 
-| Livrable                                | Phase | Statut |
-| --------------------------------------- | ----- | ------ |
-| PLAN.md (suivi)                         | 0     | ✅     |
-| .gitignore configuré                    | 0     | ✅     |
-| Code source complet                     | 0–10  | ⬜     |
-| README.md détaillé                      | 9     | ⬜     |
-| Captures d'écran                        | 9–10  | ⬜     |
-| Recherche + géocodage                   | 3     | ⬜     |
-| Météo actuelle + prévisions 7j          | 6     | ⬜     |
-| Favoris localStorage                    | 4     | ⬜     |
-| Feature originale outfit                | 7     | ⬜     |
-| Routes dynamiques                       | 6     | ⬜     |
-| Server + Client Components              | 2–7   | ⬜     |
-| loading.tsx / error.tsx / not-found.tsx | 8     | ⬜     |
-| TypeScript strict (pas de any)          | 2     | ⬜     |
-| Cache API (pas de duplication)          | 2     | ⬜     |
-| UI responsive + DESIGN.md               | 1,5–7 | ⬜     |
-| Historique Git propre                   | toutes | ⬜    |
+| Livrable | Phase | Statut |
+| -------- | ----- | ------ |
+| PLAN.md | 0 | ✅ |
+| .gitignore configuré | 0 | ✅ |
+| Bootstrap Next.js + metadata MeeThéo | 0 | ✅ |
+| Code source complet | 0–10 | ⬜ |
+| README.md détaillé (à jour) | 9 | ⬜ |
+| Captures d'écran | 9–10 | ⬜ |
+| Recherche + géocodage | 3 | ⬜ |
+| Météo actuelle + prévisions 7j | 6 | ⬜ |
+| Favoris localStorage | 4 | ⬜ |
+| Feature originale outfit | 7 | ⬜ |
+| Routes dynamiques | 6 | ⬜ |
+| Server + Client Components | 2–7 | ⬜ |
+| loading / error / not-found | 8 | ⬜ |
+| TypeScript strict (pas de any) | 2 | ⬜ |
+| Cache API | 2 | ⬜ |
+| UI responsive + DESIGN.md | 1, 5–7 | 🔄 (design system ✅) |
+| Historique Git propre | toutes | 🔄 (2/11 phases) |
 
-### Captures à réaliser (par toi)
+### Captures à réaliser (par toi, Phase 9–10)
 
 1. Accueil — recherche + favoris
 2. Résultats de recherche / suggestions
@@ -147,13 +366,14 @@ Chaque phase = **1 commit** (ou série de commits atomiques) avec message conven
 
 ---
 
-## Stratégie Git
+## Historique Git
 
 ```
 main
- ├── chore: init MeeThéo project foundations   ← Phase 0 (en cours)
- ├── feat(design): apply DevLog tokens...      ← Phase 1
- ├── feat(api): add Open-Meteo types...        ← Phase 2
+ ├── 1864234  first commit              (README anticipé)
+├── 8c06437  feat: project fundations  ← Phase 0 ✅
+ ├── …        feat(design): …           ← Phase 1 (à committer)
+ ├── …        feat(api): …               ← Phase 2 (prochaine)
  └── …
 ```
 
@@ -163,7 +383,9 @@ main
 
 ## Prochaine étape
 
-**Phase 1** — Design system DevLog. Valider avant de lancer l'implémentation.
+**Phase 2 — Types TypeScript et couche API**
+
+Dis « go phase 2 » pour lancer l'implémentation.
 
 ---
 
