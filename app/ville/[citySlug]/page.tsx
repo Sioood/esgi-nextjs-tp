@@ -8,9 +8,11 @@ import { FavoriteButton } from "@/components/favorites/FavoriteButton";
 import { CurrentWeatherCard } from "@/components/weather/CurrentWeatherCard";
 import { ForecastList } from "@/components/weather/ForecastList";
 import { SunTimes } from "@/components/weather/SunTimes";
+import { OutfitCard } from "@/components/outfit/OutfitCard";
 import { STRINGS } from "@/lib/constants";
 import { parseCitySlug, osmMapUrl } from "@/lib/utils/city-slug";
 import { formatLocation } from "@/lib/utils/format";
+import { buildOutfitInput, getOutfitSuggestions } from "@/lib/utils/outfit";
 
 interface CityPageProps {
   params: Promise<{ citySlug: string }>;
@@ -43,6 +45,8 @@ export default async function CityPage({ params }: CityPageProps) {
 
   const weather = await getWeather(city.latitude, city.longitude);
 
+  const outfitItems = getOutfitSuggestions(buildOutfitInput(weather));
+
   const favoriteCity = {
     id: city.id,
     name: city.name,
@@ -68,7 +72,10 @@ export default async function CityPage({ params }: CityPageProps) {
         <FavoriteButton city={favoriteCity} />
       </div>
 
-      <CurrentWeatherCard current={weather.current} />
+      <div className="grid gap-6 lg:grid-cols-2">
+        <CurrentWeatherCard current={weather.current} />
+        <OutfitCard items={outfitItems} />
+      </div>
 
       <ForecastList daily={weather.daily} timezone={weather.timezone} />
 

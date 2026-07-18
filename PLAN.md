@@ -284,18 +284,18 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 7 — Fonctionnalité outfit ⬜ PROCHAINE
+### Phase 7 — Fonctionnalité outfit ✅ TERMINÉE
 
 **Commit suggéré :** `feat(outfit): add daily outfit suggestion based on weather`
 
-- [ ] `lib/utils/outfit.ts` — moteur de règles
-- [ ] `OutfitCard` sur page détail
-- [ ] Résumé outfit sur cartes favoris (accueil)
-- [ ] Chips DevLog (veste, parapluie, etc.)
+- [x] `lib/utils/outfit.ts` — moteur de règles
+- [x] `OutfitCard` sur page détail
+- [x] Résumé outfit sur cartes favoris (accueil)
+- [x] Chips DevLog (veste, parapluie, etc.)
 
 ---
 
-### Phase 8 — États Next.js ⬜
+### Phase 8 — États Next.js ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(ui): add loading, error and not-found states`
 
@@ -348,14 +348,14 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | Recherche + géocodage | 3 | ✅ |
 | Météo actuelle + prévisions 7j | 6 | ✅ |
 | Favoris localStorage | 4 | ✅ |
-| Feature originale outfit | 7 | ⬜ |
+| Feature originale outfit | 7 | ✅ |
 | Routes dynamiques | 6 | ✅ |
 | Server + Client Components | 2–7 | ✅ |
 | loading / error / not-found | 8 | ⬜ |
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
-| Historique Git propre | toutes | 🔄 (7/11 phases) |
+| Historique Git propre | toutes | 🔄 (8/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -384,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 7 — Fonctionnalité outfit**
+**Phase 8 — États Next.js** (loading, error, not-found)
 
-Dis « go phase 7 » pour lancer l'implémentation.
+Dis « go phase 8 » pour lancer l'implémentation.
 
 ---
 

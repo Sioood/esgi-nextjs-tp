@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import type { FavoriteCity } from "@/lib/types/favorites";
 import type { WeatherResponse } from "@/lib/types/weather";
 import { Card } from "@/components/ui/Card";
+import { OutfitCard } from "@/components/outfit/OutfitCard";
 import { WeatherIcon } from "@/components/weather/WeatherIcon";
 import { useFavorites } from "@/lib/hooks/useFavorites";
 import { STRINGS } from "@/lib/constants";
 import { cityPath } from "@/lib/utils/city-slug";
 import { formatLocation, formatTemperature } from "@/lib/utils/format";
+import { buildOutfitInput, getOutfitSuggestions } from "@/lib/utils/outfit";
 import { getWeatherCodeInfo } from "@/lib/utils/weather-codes";
 import { FavoriteButton } from "./FavoriteButton";
 
@@ -45,6 +47,10 @@ function FavoriteWeatherCard({ city }: { city: FavoriteCity }) {
     ? getWeatherCodeInfo(weather.current.weather_code).label
     : null;
 
+  const outfitItems = weather
+    ? getOutfitSuggestions(buildOutfitInput(weather))
+    : [];
+
   return (
     <Card className="relative h-full">
       <div className="absolute right-2 top-2">
@@ -67,6 +73,8 @@ function FavoriteWeatherCard({ city }: { city: FavoriteCity }) {
             </div>
           </div>
         )}
+
+        {outfitItems.length > 0 && <OutfitCard items={outfitItems} compact />}
 
         {!weather && !error && (
           <p className="mt-4 text-xs text-text-tertiary">{STRINGS.loading}</p>
