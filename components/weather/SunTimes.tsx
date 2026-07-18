@@ -10,7 +10,7 @@ interface SunTimesProps {
 
 export function SunTimes({ sunrise, sunset, timezone }: SunTimesProps) {
   return (
-    <WindowCard title="sun.times" className="h-full">
+    <WindowCard title="sun.times">
       <dl className="flex items-center justify-between gap-4">
         <div>
           <dt className="font-mono text-[11px] font-semibold uppercase tracking-widest text-text-secondary">

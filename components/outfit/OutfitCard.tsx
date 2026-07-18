@@ -30,7 +30,7 @@ export function OutfitCard({ items, compact = false }: OutfitCardProps) {
   }
 
   return (
-    <WindowCard title="outfit.today" className="h-full">
+    <WindowCard title="outfit.today">
       <div className="flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">
           👕

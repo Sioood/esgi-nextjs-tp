@@ -1,7 +1,6 @@
 import type { DailyForecast } from "@/lib/types/weather";
 import { WindowCard } from "@/components/ui/WindowCard";
 import { RangeBar } from "@/components/ui/RangeBar";
-import { STRINGS } from "@/lib/constants";
 import {
   formatDayMonth,
   formatShortDay,

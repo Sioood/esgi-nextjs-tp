@@ -79,6 +79,7 @@ export function CityPageSkeleton() {
         <div className="space-y-6">
           <Skeleton className="h-40 rounded-md" />
           <Skeleton className="h-40 rounded-md" />
+          <Skeleton className="h-12 rounded-sm" />
         </div>
       </div>
     </div>
