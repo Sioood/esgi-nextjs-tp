@@ -322,16 +322,16 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 10 — Qualité finale ⬜ PROCHAINE
+### Phase 10 — Qualité finale ✅ TERMINÉE
 
 **Commit suggéré :** `chore: final polish and lint pass`
 
-- [ ] `pnpm lint` sans erreur
-- [ ] `pnpm build` réussi
-- [ ] Responsive vérifié (3 breakpoints)
-- [ ] Pas de code mort ni `console.log`
-- [ ] Historique Git lisible
-- [ ] Dépôt public prêt pour soumission
+- [x] `pnpm lint` sans erreur
+- [x] `pnpm build` réussi
+- [x] Responsive vérifié (breakpoints `sm` / `md` / `lg` sur accueil, favoris, page ville)
+- [x] Pas de code mort ni `console.log`
+- [x] Historique Git lisible (12 commits phase par phase)
+- [x] Dépôt public prêt pour soumission (captures à ajouter par toi)
 
 ---
 
@@ -354,8 +354,8 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | loading / error / not-found | 8 | ✅ |
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
-| UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
-| Historique Git propre | toutes | 🔄 (10/11 phases) |
+| UI responsive + DESIGN.md | 1, 5–7 | ✅ |
+| Historique Git propre | toutes | ✅ |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -371,22 +371,30 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ```
 main
- ├── 1864234  first commit              (README anticipé)
-├── 8c06437  feat: project fundations  ← Phase 0 ✅
- ├── …        feat(design): …           ← Phase 1 (à committer)
- ├── …        feat(api): …               ← Phase 2 (prochaine)
- └── …
+ ├── 1864234  first commit
+ ├── 8c06437  feat: project fundations          (Phase 0)
+ ├── c3080c7  feat: DevLog tokens and fonts     (Phase 1)
+ ├── b581405  feat: Open-Meteo types and API    (Phase 2)
+ ├── b28d376  feat: city search autocomplete    (Phase 3)
+ ├── 000214e  feat: localStorage favorites      (Phase 4)
+ ├── bed05a7  feat: homepage search + favorites (Phase 5)
+ ├── e1ea3de  feat: city detail page            (Phase 6)
+ ├── 2ed94c7  feat: outfit suggestion           (Phase 7)
+ ├── e380b34  feat: loading/error/not-found     (Phase 8)
+ ├── 76b248e  fix: approve builds
+ └── b3b740d  docs: complete README             (Phase 9)
 ```
 
 **Convention :** `feat(scope):`, `fix(scope):`, `chore:`, `docs:`
 
 ---
 
-## Prochaine étape
+## Projet terminé
 
-**Phase 10 — Qualité finale** (lint, build, polish)
+Toutes les phases (0–10) sont implémentées. Il reste uniquement :
 
-Dis « go phase 10 » pour lancer la validation finale.
+1. Ajouter les 5 captures dans `public/screenshots/`
+2. Pousser sur le dépôt public (`git push`)
 
 ---
 
