@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GeocodingResult } from "@/lib/types/geocoding";
+import { FavoriteButton } from "@/components/favorites/FavoriteButton";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import {
@@ -11,6 +12,7 @@ import {
   STRINGS,
 } from "@/lib/constants";
 import { cityPath } from "@/lib/utils/city-slug";
+import { toFavoriteCity } from "@/lib/utils/favorites";
 import { formatLocation } from "@/lib/utils/format";
 import { cn } from "@/lib/utils/cn";
 
@@ -159,13 +161,14 @@ export function CitySearch() {
               id={`city-option-${index}`}
               role="option"
               aria-selected={index === activeIndex}
+              className={cn(
+                "flex items-center transition-colors hover:bg-surface-raised",
+                index === activeIndex && "bg-surface-raised",
+              )}
             >
               <Link
                 href={cityPath(city.id, city.name)}
-                className={cn(
-                  "block px-4 py-3 text-sm transition-colors hover:bg-surface-raised",
-                  index === activeIndex && "bg-surface-raised",
-                )}
+                className="block flex-1 px-4 py-3 text-sm"
                 onClick={() => {
                   setIsOpen(false);
                   setQuery("");
@@ -176,6 +179,7 @@ export function CitySearch() {
                   {formatLocation(city)}
                 </span>
               </Link>
+              <FavoriteButton city={toFavoriteCity(city)} />
             </li>
           ))}
         </ul>

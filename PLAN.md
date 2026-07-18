@@ -243,19 +243,20 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 4 — Gestion des favoris ⬜ PROCHAINE
+### Phase 4 — Gestion des favoris ✅ TERMINÉE
 
 **Commit suggéré :** `feat(favorites): add localStorage favorites with UI`
 
-- [ ] `lib/hooks/useFavorites.tsx` — Context + `localStorage` (`meetheo:favorites`)
-- [ ] Type `FavoriteCity` : `{ id, name, latitude, longitude, country, admin1 }`
-- [ ] `FavoriteButton` (étoile pleine/vide)
-- [ ] `FavoritesProvider` dans layout
-- [ ] Indicateur cohérent sur toutes les pages
+- [x] `lib/hooks/useFavorites.tsx` — Context + `localStorage` (`meetheo:favorites`)
+- [x] Type `FavoriteCity` : `{ id, name, latitude, longitude, country, admin1 }`
+- [x] `FavoriteButton` (étoile pleine/vide)
+- [x] `FavoritesProvider` dans layout
+- [x] Indicateur cohérent sur toutes les pages (recherche + liste favoris)
+- [x] `FavoritesList` basique (cartes météo en Phase 5)
 
 ---
 
-### Phase 5 — Page d'accueil complète ⬜
+### Phase 5 — Page d'accueil complète ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(home): build homepage with search and favorites`
 
@@ -346,7 +347,7 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | Captures d'écran | 9–10 | ⬜ |
 | Recherche + géocodage | 3 | ✅ |
 | Météo actuelle + prévisions 7j | 6 | ⬜ |
-| Favoris localStorage | 4 | ⬜ |
+| Favoris localStorage | 4 | ✅ |
 | Feature originale outfit | 7 | ⬜ |
 | Routes dynamiques | 6 | ⬜ |
 | Server + Client Components | 2–7 | ⬜ |
@@ -354,7 +355,7 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (design system ✅) |
-| Historique Git propre | toutes | 🔄 (4/11 phases) |
+| Historique Git propre | toutes | 🔄 (5/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -383,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 4 — Gestion des favoris**
+**Phase 5 — Page d'accueil complète** (cartes météo sur les favoris)
 
-Dis « go phase 4 » pour lancer l'implémentation.
+Dis « go phase 5 » pour lancer l'implémentation.
 
 ---
 

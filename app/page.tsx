@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/Container";
+import { FavoritesList } from "@/components/favorites/FavoritesList";
 import { CitySearch } from "@/components/search/CitySearch";
 import { APP_NAME, STRINGS } from "@/lib/constants";
 
@@ -15,6 +16,11 @@ export default function Home() {
         <div className="mx-auto max-w-lg sm:mx-0">
           <CitySearch />
         </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-mono text-xl font-semibold">{STRINGS.favoritesTitle}</h2>
+        <FavoritesList />
       </section>
     </Container>
   );

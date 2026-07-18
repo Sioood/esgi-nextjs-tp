@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Providers } from "@/components/layout/Providers";
 import "./globals.css";
 
 const inter = Inter({
@@ -31,9 +32,11 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col antialiased">
-        <Header />
-        <main className="flex-1 py-8 sm:py-12">{children}</main>
-        <Footer />
+        <Providers>
+          <Header />
+          <main className="flex-1 py-8 sm:py-12">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
