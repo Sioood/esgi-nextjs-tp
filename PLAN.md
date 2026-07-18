@@ -231,19 +231,19 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 3 — Recherche de villes ⬜ PROCHAINE
+### Phase 3 — Recherche de villes ✅ TERMINÉE
 
 **Commit suggéré :** `feat(search): add city search with autocomplete`
 
-- [ ] `CitySearch` (client) : debounce 300 ms, min 3 chars
-- [ ] Liste suggestions (nom, région, pays)
-- [ ] Navigation `Link` → `/ville/{id}-{slug}`
-- [ ] États chargement / vide / erreur
-- [ ] Accessibilité : `aria-expanded`, clavier, focus ring vert
+- [x] `CitySearch` (client) : debounce 300 ms, min 3 chars
+- [x] Liste suggestions (nom, région, pays)
+- [x] Navigation `Link` → `/ville/{id}-{slug}`
+- [x] États chargement / vide / erreur
+- [x] Accessibilité : `aria-expanded`, clavier, focus ring vert
 
 ---
 
-### Phase 4 — Gestion des favoris ⬜
+### Phase 4 — Gestion des favoris ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(favorites): add localStorage favorites with UI`
 
@@ -344,7 +344,7 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | Code source complet | 0–10 | ⬜ |
 | README.md détaillé (à jour) | 9 | ⬜ |
 | Captures d'écran | 9–10 | ⬜ |
-| Recherche + géocodage | 3 | ⬜ |
+| Recherche + géocodage | 3 | ✅ |
 | Météo actuelle + prévisions 7j | 6 | ⬜ |
 | Favoris localStorage | 4 | ⬜ |
 | Feature originale outfit | 7 | ⬜ |
@@ -354,7 +354,7 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (design system ✅) |
-| Historique Git propre | toutes | 🔄 (3/11 phases) |
+| Historique Git propre | toutes | 🔄 (4/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -383,9 +383,9 @@ main
 
 ## Prochaine étape
 
-**Phase 3 — Recherche de villes**
+**Phase 4 — Gestion des favoris**
 
-Dis « go phase 3 » pour lancer l'implémentation.
+Dis « go phase 4 » pour lancer l'implémentation.
 
 ---
 
