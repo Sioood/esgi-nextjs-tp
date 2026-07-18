@@ -1,3 +1,4 @@
+import { STRINGS } from "@/lib/constants";
 import { Container } from "./Container";
 
 export function Footer() {
@@ -5,7 +6,7 @@ export function Footer() {
     <footer className="mt-auto border-t border-border-subtle py-6">
       <Container>
         <p className="text-center text-xs text-text-tertiary">
-          Données météo par Open-Meteo (CC BY 4.0) —{" "}
+          {STRINGS.attribution} —{" "}
           <a
             href="https://open-meteo.com/"
             target="_blank"

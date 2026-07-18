@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APP_NAME } from "@/lib/constants";
 import { Container } from "./Container";
 
 export function Header() {
@@ -9,7 +10,7 @@ export function Header() {
           href="/"
           className="font-mono text-xl font-bold tracking-tight text-primary transition-colors hover:text-[#22c55e]"
         >
-          MeeThéo
+          {APP_NAME}
         </Link>
       </Container>
     </header>

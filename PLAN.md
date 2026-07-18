@@ -215,23 +215,23 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 2 — Types TypeScript et couche API ⬜ PROCHAINE
+### Phase 2 — Types TypeScript et couche API ✅ TERMINÉE
 
 **Commit suggéré :** `feat(api): add Open-Meteo types and fetch helpers`
 
-- [ ] Types : `GeocodingResult`, `WeatherResponse`, `FavoriteCity`, etc.
-- [ ] `lib/api/geocoding.ts` — `searchCities()`, `getCityById()`
-- [ ] `lib/api/forecast.ts` — `getWeather()` avec `cache()` + `revalidate: 1800`
-- [ ] `lib/utils/city-slug.ts` — `toCitySlug()`, `parseCitySlug()`, `cityPath()`, `osmMapUrl()`
-- [ ] `lib/utils/weather-codes.ts` — labels FR + icônes WMO
-- [ ] `lib/utils/format.ts` — température, vent, dates FR
-- [ ] `lib/constants.ts` — chaînes UI, clés storage, constantes API
-- [ ] `app/api/geocode/route.ts`
-- [ ] Zéro `any`
+- [x] Types : `GeocodingResult`, `WeatherResponse`, `FavoriteCity`, etc.
+- [x] `lib/api/geocoding.ts` — `searchCities()`, `getCityById()`
+- [x] `lib/api/forecast.ts` — `getWeather()` avec `cache()` + `revalidate: 1800`
+- [x] `lib/utils/city-slug.ts` — `toCitySlug()`, `parseCitySlug()`, `cityPath()`, `osmMapUrl()`
+- [x] `lib/utils/weather-codes.ts` — labels FR + icônes WMO
+- [x] `lib/utils/format.ts` — température, vent, dates FR
+- [x] `lib/constants.ts` — chaînes UI, clés storage, constantes API
+- [x] `app/api/geocode/route.ts`
+- [x] Zéro `any`
 
 ---
 
-### Phase 3 — Recherche de villes ⬜
+### Phase 3 — Recherche de villes ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(search): add city search with autocomplete`
 
@@ -351,10 +351,10 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | Routes dynamiques | 6 | ⬜ |
 | Server + Client Components | 2–7 | ⬜ |
 | loading / error / not-found | 8 | ⬜ |
-| TypeScript strict (pas de any) | 2 | ⬜ |
-| Cache API | 2 | ⬜ |
+| TypeScript strict (pas de any) | 2 | ✅ |
+| Cache API | 2 | ✅ |
 | UI responsive + DESIGN.md | 1, 5–7 | 🔄 (design system ✅) |
-| Historique Git propre | toutes | 🔄 (2/11 phases) |
+| Historique Git propre | toutes | 🔄 (3/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -383,9 +383,9 @@ main
 
 ## Prochaine étape
 
-**Phase 2 — Types TypeScript et couche API**
+**Phase 3 — Recherche de villes**
 
-Dis « go phase 2 » pour lancer l'implémentation.
+Dis « go phase 3 » pour lancer l'implémentation.
 
 ---
 
