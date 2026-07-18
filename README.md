@@ -135,9 +135,9 @@ Ajouter vos captures dans [`public/screenshots/`](public/screenshots/) :
 | ------- | ------- |
 | `01-accueil.png` | Page d'accueil avec recherche et favoris |
 | `02-recherche.png` | Résultats de recherche / suggestions |
-| `03-detail-ville.png` | Page détail ville complète |
-| `04-favoris.png` | Gestion des favoris (ajout / suppression) |
-| `05-outfit.png` | Suggestion d'outfit en action |
+| `03-ville-1.png` | Page détail ville complète |
+| `04-ville-2.png` | Page détail ville complète |
+| `05-feature-outfit.png` | Suggestion d'outfit en action |
 
 ## Attribution
 
