@@ -256,20 +256,20 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 
 ---
 
-### Phase 5 — Page d'accueil complète ⬜ PROCHAINE
+### Phase 5 — Page d'accueil complète ✅ TERMINÉE
 
 **Commit suggéré :** `feat(home): build homepage with search and favorites`
 
-- [ ] Hero « MeeThéo » + `CitySearch`
-- [ ] Section favoris avec `FavoritesList`
-- [ ] Cartes météo légères (temp via `/api/weather`)
-- [ ] État « aucun favori »
-- [ ] Responsive mobile / tablette / desktop
-- [ ] Toute navigation via `<Link>`
+- [x] Hero « MeeThéo » + `CitySearch`
+- [x] Section favoris avec `FavoritesList`
+- [x] Cartes météo légères (temp via `/api/weather`)
+- [x] État « aucun favori »
+- [x] Responsive mobile / tablette / desktop (grille 1/2/3 colonnes)
+- [x] Toute navigation via `<Link>`
 
 ---
 
-### Phase 6 — Page détail ville ⬜
+### Phase 6 — Page détail ville ⬜ PROCHAINE
 
 **Commit suggéré :** `feat(city): add dynamic city detail page`
 
@@ -354,8 +354,8 @@ Affichage : carte sur page détail + résumé compact sur favoris (accueil).
 | loading / error / not-found | 8 | ⬜ |
 | TypeScript strict (pas de any) | 2 | ✅ |
 | Cache API | 2 | ✅ |
-| UI responsive + DESIGN.md | 1, 5–7 | 🔄 (design system ✅) |
-| Historique Git propre | toutes | 🔄 (5/11 phases) |
+| UI responsive + DESIGN.md | 1, 5–7 | 🔄 (accueil ✅) |
+| Historique Git propre | toutes | 🔄 (6/11 phases) |
 
 ### Captures à réaliser (par toi, Phase 9–10)
 
@@ -384,9 +384,9 @@ main
 
 ## Prochaine étape
 
-**Phase 5 — Page d'accueil complète** (cartes météo sur les favoris)
+**Phase 6 — Page détail ville**
 
-Dis « go phase 5 » pour lancer l'implémentation.
+Dis « go phase 6 » pour lancer l'implémentation.
 
 ---
 
